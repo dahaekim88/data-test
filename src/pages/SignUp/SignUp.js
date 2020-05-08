@@ -1,0 +1,65 @@
+import React, { useState } from 'react';
+import { useMutation } from '@apollo/react-hooks';
+import { SIGNUP } from '../../apollo/mutations';
+import { setAccessToken } from '../../utils/accessToken';
+
+const SignUp = ({ history }) => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [signup] = useMutation(SIGNUP);
+
+  return (
+    <form
+      onSubmit={async (e) => {
+        e.preventDefault();
+
+        const response = await signup({
+          variables: {
+            name,
+            email,
+            password,
+          },
+        });
+
+        if (response && response.data) {
+          localStorage.setItem('name', response.data.signup.user.name);
+          setAccessToken(response.data.login.accessToken);
+        }
+        history.push('/');
+      }}
+    >
+      <div>
+        <input
+          value={name}
+          placeholder="name"
+          onChange={(e) => {
+            setName(e.target.value);
+          }}
+        />
+      </div>
+      <div>
+        <input
+          value={email}
+          placeholder="email"
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
+        />
+      </div>
+      <div>
+        <input
+          type="password"
+          value={password}
+          placeholder="password"
+          onChange={(e) => {
+            setPassword(e.target.value);
+          }}
+        />
+      </div>
+      <button type="submit">Sign Up</button>
+    </form>
+  );
+};
+
+export default SignUp;

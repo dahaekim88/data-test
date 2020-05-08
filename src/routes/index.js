@@ -1,40 +1,48 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
-import { Home, Test } from '../pages';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Home, SignUp, Login } from '../pages';
 import { Navbar } from '../components';
 
-const routes = [
+export const routes = [
   {
     path: '/',
+    name: 'Home',
     exact: true,
     component: Home,
   },
   {
-    path: '/test',
+    path: '/signup',
+    name: 'SignUp',
     exact: true,
-    component: Test,
+    component: SignUp,
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    exact: true,
+    component: Login,
   },
 ];
 
-const RouteWithSubRoutes = route => {
+const RouteWithSubRoutes = (route) => {
   return (
     <Route
       path={route.path}
       exact={route.exact}
-      render={props => <route.component {...props} routes={route.routes} />}
+      render={(props) => <route.component {...props} routes={route.routes} />}
     />
   );
 };
 
 const Routes = () => (
-  <>
+  <Router>
     <Navbar />
     <Switch>
-      {routes.map(route => (
+      {routes.map((route) => (
         <RouteWithSubRoutes key={route.path} {...route} />
       ))}
     </Switch>
-  </>
+  </Router>
 );
 
 export default Routes;
