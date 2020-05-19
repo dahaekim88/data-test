@@ -11,13 +11,15 @@ const App = () => {
       method: 'POST',
       credentials: 'include',
     }).then(async (x) => {
-      const data = await x.json();
-      setAccessToken(data.accessToken);
+      const { accessToken } = await x.json();
+      setAccessToken(accessToken);
       setLoading(false);
     });
   }, []);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return <Routes />;
 };

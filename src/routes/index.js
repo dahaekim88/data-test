@@ -1,7 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Home, SignUp, Login } from '../pages';
-import { Navbar } from '../components';
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
+import { Home, SignUp, Login, Users } from '../pages';
+import { Header, PrivateRoute, PublicRoute } from '../components';
 
 export const routes = [
   {
@@ -9,38 +9,56 @@ export const routes = [
     name: 'Home',
     exact: true,
     component: Home,
+    private: false,
+    restricted: false,
   },
   {
     path: '/signup',
     name: 'SignUp',
     exact: true,
     component: SignUp,
+    private: false,
+    restricted: true,
   },
   {
     path: '/login',
     name: 'Login',
     exact: true,
     component: Login,
+    private: false,
+    restricted: true,
+  },
+  {
+    path: '/users',
+    name: 'Users',
+    exact: true,
+    component: Users,
+    private: true,
   },
 ];
 
-const RouteWithSubRoutes = (route) => {
-  return (
-    <Route
-      path={route.path}
-      exact={route.exact}
-      render={(props) => <route.component {...props} routes={route.routes} />}
-    />
-  );
-};
-
 const Routes = () => (
   <Router>
-    <Navbar />
+    <Header />
     <Switch>
-      {routes.map((route) => (
-        <RouteWithSubRoutes key={route.path} {...route} />
-      ))}
+      {routes.map((route) => {
+        return route.private ? (
+          <PrivateRoute
+            key={route.name}
+            path={route.path}
+            exact={route.exact}
+            component={route.component}
+          />
+        ) : (
+          <PublicRoute
+            key={route.name}
+            path={route.path}
+            exact={route.exact}
+            component={route.component}
+            restricted={route.restricted}
+          />
+        );
+      })}
     </Switch>
   </Router>
 );

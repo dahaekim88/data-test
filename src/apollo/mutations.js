@@ -6,7 +6,7 @@ export const SIGNUP = gql`
       accessToken
       user {
         name
-        tokenVersion
+        email
       }
     }
   }
@@ -18,8 +18,14 @@ export const LOGIN = gql`
       accessToken
       user {
         name
-        tokenVersion
+        email
       }
     }
+  }
+`;
+
+export const LOGOUT = gql`
+  mutation Logout {
+    logout
   }
 `;

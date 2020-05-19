@@ -5,7 +5,15 @@ export const GET_USERS = gql`
     getUsers {
       name
       email
-      tokenVersion
+    }
+  }
+`;
+
+export const GET_PROFILE = gql`
+  query {
+    getProfile {
+      name
+      email
     }
   }
 `;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { LOGIN } from '../../apollo/mutations';
+import { GET_PROFILE } from '../../apollo/queries';
 import { setAccessToken } from '../../utils/accessToken';
 
 const Login = ({ history }) => {
@@ -18,10 +19,20 @@ const Login = ({ history }) => {
             email,
             password,
           },
+          update: (store, { data }) => {
+            if (!data) {
+              return null;
+            }
+            store.writeQuery({
+              query: GET_PROFILE,
+              data: {
+                getProfile: data.login.user,
+              },
+            });
+          },
         });
 
         if (response && response.data) {
-          localStorage.setItem('name', response.data.login.user.name);
           setAccessToken(response.data.login.accessToken);
         }
 

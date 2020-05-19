@@ -1,3 +1,4 @@
-import { Navbar } from './Navbar';
+import { Header } from './Header';
+import { PrivateRoute, PublicRoute } from './Route';
 
-export { Navbar };
+export { Header, PrivateRoute, PublicRoute };
