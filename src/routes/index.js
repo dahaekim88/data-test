@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
-import { Home, SignUp, Login, Users } from '../pages';
+import { Home, SignUp, Login, Users, NotFound, NetworkError } from '../pages';
 import { Header, PrivateRoute, PublicRoute } from '../components';
 
 export const routes = [
@@ -37,11 +37,28 @@ export const routes = [
   },
 ];
 
+const hiddenPages = [
+  {
+    path: '/network-error',
+    name: 'NetworkError',
+    exact: false,
+    component: NetworkError,
+    private: false,
+  },
+  {
+    path: '*',
+    name: 'NotFound',
+    exact: false,
+    component: NotFound,
+    private: false,
+  },
+];
+
 const Routes = () => (
   <Router>
     <Header />
     <Switch>
-      {routes.map((route) => {
+      {routes.concat(hiddenPages).map((route) => {
         return route.private ? (
           <PrivateRoute
             key={route.name}

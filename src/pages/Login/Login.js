@@ -5,6 +5,7 @@ import { GET_PROFILE } from '../../apollo/queries';
 import { setAccessToken } from '../../utils/accessToken';
 
 const Login = ({ history }) => {
+  const [errors, setErrors] = useState([]);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [login] = useMutation(LOGIN);
@@ -30,13 +31,20 @@ const Login = ({ history }) => {
               },
             });
           },
+        }).catch((error) => {
+          const errors = error.graphQLErrors.map(({ extensions, message }) => {
+            return {
+              code: extensions.code,
+              message,
+            };
+          });
+          setErrors(errors);
         });
 
         if (response && response.data) {
           setAccessToken(response.data.login.accessToken);
+          history.push('/');
         }
-
-        history.push('/');
       }}
     >
       <div>
@@ -59,6 +67,7 @@ const Login = ({ history }) => {
         />
       </div>
       <button type="submit">Login</button>
+      {errors && errors.map((error, i) => <div key={i}>{error.message}</div>)}
     </form>
   );
 };

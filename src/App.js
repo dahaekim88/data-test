@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Routes from './routes';
+import { ErrorBoundary } from './components';
 import { setAccessToken } from './utils/accessToken';
 import { API_URL } from './.config';
 
@@ -21,7 +22,11 @@ const App = () => {
     return <div>Loading...</div>;
   }
 
-  return <Routes />;
+  return (
+    <ErrorBoundary>
+      <Routes />
+    </ErrorBoundary>
+  );
 };
 
 export default App;
